@@ -4,14 +4,14 @@ import pandas as pd
 from preprocessing import preprocessing_img
 
 
-face_caffe_model = "C:/Users/hyebin/PycharmProjects/Face_DAR/model/caffe/res10_300x300_ssd_iter_140000.caffemodel"
-face_prototxt = "C:/Users/hyebin/PycharmProjects/Face_DAR/model/caffe/deploy.prototxt"
+face_caffe_model = "C:/Users/hyebin/PycharmProjects/Face_DAR/models/caffe/res10_300x300_ssd_iter_140000.caffemodel"
+face_prototxt = "C:/Users/hyebin/PycharmProjects/Face_DAR/models/caffe/deploy.prototxt"
 
-age_caffe_model = "C:/Users/hyebin/PycharmProjects/Face_DAR/model/caffe/age_net.caffemodel"
-age_prototxt = "C:/Users/hyebin/PycharmProjects/Face_DAR/model/caffe/age_deploy.prototxt"
+age_caffe_model = "C:/Users/hyebin/PycharmProjects/Face_DAR/models/caffe/age_net.caffemodel"
+age_prototxt = "C:/Users/hyebin/PycharmProjects/Face_DAR/models/caffe/age_deploy.prototxt"
 
-gender_caffe_model = "C:/Users/hyebin/PycharmProjects/Face_DAR/model/caffe/gender_net.caffemodel"
-gender_prototxt = "C:/Users/hyebin/PycharmProjects/Face_DAR/model/caffe/gender_deploy.prototxt"
+gender_caffe_model = "C:/Users/hyebin/PycharmProjects/Face_DAR/models/caffe/gender_net.caffemodel"
+gender_prototxt = "C:/Users/hyebin/PycharmProjects/Face_DAR/models/caffe/gender_deploy.prototxt"
 
 face_net = cv2.dnn.readNetFromCaffe(face_prototxt,face_caffe_model)
 age_net = cv2.dnn.readNetFromCaffe(age_prototxt,age_caffe_model)
@@ -20,7 +20,7 @@ gender_net = cv2.dnn.readNetFromCaffe(gender_prototxt,gender_caffe_model)
 age_list = ['(0-2)', '(4-6)', '(8-12)', '(15-20)', '(25-32)', '(38-43)', '(48-53)', '(60-100)']
 gender_list = ['Male','Female']
 
-img_file = "./images/Irene.jpg"
+img_file = "./images/jin.jpeg"
 img = cv2.imread(img_file)
 r= 500 / img.shape[0]
 # img = cv2.resize(img, (int(img.shape[1]*r),500))
@@ -75,6 +75,12 @@ for face_detect in face_result[0,0,:,:]:
         cv2.putText(img_copy,text_gender ,(left-50 ,top -35),cv2.FONT_HERSHEY_SIMPLEX,0.6,(0,0,255),2)
 
 cv2.imshow("img",img_copy)
+
+img_name = img_file[img_file.rfind("/")+1:]
+
+output_dir = "./result/"+img_name
+
+cv2.imwrite(output_dir,img_copy)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
